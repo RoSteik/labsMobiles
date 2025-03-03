@@ -16,8 +16,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-
 class RockQuestionWidget extends StatefulWidget {
   const RockQuestionWidget({super.key});
 
@@ -42,15 +40,13 @@ class _RockQuestionWidgetState extends State<RockQuestionWidget> {
     });
   }
 
-
   Future<void> _launchURL() async {
-    final Uri url = Uri.parse('https://www.youtube.com/watch?v=dQw4w9WgXcQ'); // Rickroll link
+    final Uri url = Uri.parse(
+        'https://www.youtube.com/watch?v=dQw4w9WgXcQ',); // Rickroll link
     if (!await launchUrl(url)) {
       throw 'Could not launch $url';
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +75,10 @@ class _RockQuestionWidgetState extends State<RockQuestionWidget> {
                 onTap: _launchURL,
                 child: const Text(
                   'Discover more here!',
-                  style: TextStyle(fontSize: 18, color: Colors.blue,
-                      decoration: TextDecoration.underline),
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,),
                 ),
               ),
           ],
