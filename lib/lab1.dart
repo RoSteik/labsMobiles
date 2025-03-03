@@ -80,7 +80,7 @@ class _RockQuestionWidgetState extends State<RockQuestionWidget> {
                 child: const Text(
                   'Discover more here!',
                   style: TextStyle(fontSize: 18, color: Colors.blue,
-                      decoration: TextDecoration.underline),
+                      decoration: TextDecoration.underline,),
                 ),
               ),
           ],

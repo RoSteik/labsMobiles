@@ -40,7 +40,7 @@ class UserProfilePage extends StatelessWidget {
               Text(
                 'Email: johndoe@example.com',
                 style: TextStyle(
-                    fontSize: ResponsiveConfig.fontSizeEmail(context)),
+                    fontSize: ResponsiveConfig.fontSizeEmail(context),),
               ),
               SizedBox(height: ResponsiveConfig.spacing(context)),
             ],

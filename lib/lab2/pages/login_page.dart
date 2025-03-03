@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:my_project/lab2/pages/main_page.dart';
 import 'package:my_project/lab2/pages/registration_page.dart';
-
 import 'package:my_project/lab2/widgets/custom_text_field.dart';
 import 'package:my_project/lab2/widgets/navigation_text_button.dart';
-import 'package:my_project/lab2/pages/main_page.dart';
 
 
 class LoginPage extends StatelessWidget {

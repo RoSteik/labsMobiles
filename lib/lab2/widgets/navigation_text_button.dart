@@ -20,4 +20,3 @@ class NavigationTextButton extends StatelessWidget {
     );
   }
 }
-
