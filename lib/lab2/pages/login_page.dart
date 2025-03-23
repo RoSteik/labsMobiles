@@ -1,12 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:my_project/lab2/pages/main_page.dart';
-import 'package:my_project/lab2/pages/registration_page.dart';
-import 'package:my_project/lab2/widgets/custom_text_field.dart';
-import 'package:my_project/lab2/widgets/navigation_text_button.dart';
 
+import 'package:my_project/lab2/logic/service/auth/auth_service.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  final AuthService _authService = AuthService();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _attemptLogin() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    final loggedIn = await _authService.login(email, password);
+
+    if (mounted) {
+      if (loggedIn) {
+        Navigator.pushReplacementNamed(context, '/');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invalid email or password')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,36 +47,24 @@ class LoginPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Fitness Tracker',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
-            const CustomTextField(
-              labelText: 'Email',
+            TextField(
+              controller: _emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
             const SizedBox(height: 10),
-            const CustomTextField(labelText: 'Password', obscureText: true),
+            TextField(
+              controller: _passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(labelText: 'Password'),
+            ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute<MainPage>(
-                    builder: (context) => const MainPage(),),
-                );
-              },
-              child: const Text(
-                'Login',
-                style: TextStyle(color: Colors.black),
-              ),
+              onPressed: _attemptLogin,
+              child: const Text('Login'),
             ),
-            const NavigationTextButton(
-              text: 'Don\'t have an account? Sign up',
-              destinationPage: RegistrationPage(),
+            TextButton(
+              onPressed: () => Navigator.pushNamed(context, '/registration'),
+              child: const Text('Don\'t have an account? Sign up'),
             ),
           ],
         ),
