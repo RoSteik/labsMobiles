@@ -3,6 +3,14 @@ import 'dart:convert';
 import 'package:my_project/lab2/logic/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class SharedPrefsHolder {
+  static late SharedPreferences instance;
+
+  static Future<void> init() async {
+    instance = await SharedPreferences.getInstance();
+  }
+}
+
 abstract class IUserStorageService {
   Future<void> saveUser(User user);
 
@@ -12,17 +20,15 @@ abstract class IUserStorageService {
 class UserStorageService implements IUserStorageService {
   @override
   Future<void> saveUser(User user) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString(user.email, jsonEncode(user.toJson()));
+    SharedPrefsHolder.instance.setString(user.email, jsonEncode(user.toJson()));
   }
 
   @override
   Future<User?> getUser(String email) async {
-    final prefs = await SharedPreferences.getInstance();
-    final userString = prefs.getString(email);
+    final userString = SharedPrefsHolder.instance.getString(email);
     if (userString != null) {
       final Map<String, dynamic> userMap =
-          jsonDecode(userString) as Map<String, dynamic>;
+      jsonDecode(userString) as Map<String, dynamic>;
       return User.fromJson(userMap);
     }
     return null;
