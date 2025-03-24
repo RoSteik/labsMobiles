@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:my_project/lab2/elements/responsive_config.dart';
 import 'package:my_project/lab2/logic/model/user.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:my_project/lab2/logic/service/auth/user_storage_service.dart';
 
 
 
@@ -24,11 +25,12 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   Future<void> _loadUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final lastLoggedInUserEmail = prefs.getString('lastLoggedInUser');
+    final lastLoggedInUserEmail = SharedPrefsHolder.instance
+        .getString('lastLoggedInUser');
 
     if (lastLoggedInUserEmail != null) {
-      final userString = prefs.getString(lastLoggedInUserEmail);
+      final userString = SharedPrefsHolder.instance
+          .getString(lastLoggedInUserEmail);
       if (userString != null) {
         final Map<String, dynamic> userMap =
         jsonDecode(userString) as Map<String, dynamic>;
