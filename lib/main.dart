@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:my_project/lab2/elements/app_routes.dart';
-
+import 'package:my_project/lab2/logic/service/auth/auth_service.dart';
+import 'package:my_project/lab2/logic/service/tracker/fitness_data_service.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(const MyApp());
 
@@ -10,11 +11,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fitness App',
-      theme: ThemeData(primarySwatch: Colors.blue,),
-      initialRoute: '/login',
-      routes: appRoutes,
+    return MultiProvider(
+      providers: [
+        Provider<AuthService>(
+          create: (_) => AuthService(),
+        ),
+        Provider<FitnessDataService>(
+          create: (_) => FitnessDataService(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Fitness App',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        initialRoute: '/login',
+        routes: appRoutes,
+      ),
     );
   }
 }
