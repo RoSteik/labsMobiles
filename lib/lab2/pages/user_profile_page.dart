@@ -6,6 +6,7 @@ import 'package:my_project/lab2/logic/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
+
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({super.key});
 
@@ -53,12 +54,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
             children: [
               CircleAvatar(
                 radius: ResponsiveConfig.avatarRadius(context),
-                backgroundImage:
-                const AssetImage('assets/place_holder.jpg'),
+                backgroundImage: const AssetImage('assets/place_holder.jpg'),
               ),
               SizedBox(height: ResponsiveConfig.spacing(context)),
               Text(
-                'Name: ${_user!.name}',
+                'Name: ${_user?.name ?? "Unknown"}',
                 style: TextStyle(
                   fontSize: ResponsiveConfig.fontSizeName(context),
                   fontWeight: FontWeight.bold,
@@ -66,7 +66,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
               ),
               SizedBox(height: ResponsiveConfig.spacing(context) / 2),
               Text(
-                'Email: ${_user!.email}',
+                'Email: ${_user?.email ?? "No email"}',
                 style: TextStyle(
                   fontSize: ResponsiveConfig.fontSizeEmail(context),
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:my_project/lab2/logic/service/auth/auth_service.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,8 +14,6 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  final AuthService _authService = AuthService();
-
   @override
   void dispose() {
     _emailController.dispose();
@@ -26,7 +25,9 @@ class _LoginPageState extends State<LoginPage> {
     final email = _emailController.text;
     final password = _passwordController.text;
 
-    final loggedIn = await _authService.login(email, password);
+    // Access AuthService via Provider
+    final authService = Provider.of<AuthService>(context, listen: false);
+    final loggedIn = await authService.login(email, password);
 
     if (mounted) {
       if (loggedIn) {
@@ -64,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             TextButton(
               onPressed: () => Navigator.pushNamed(context, '/registration'),
-              child: const Text('Don\'t have an account? Sign up'),
+              child: const Text("Don't have an account? Sign up"),
             ),
           ],
         ),

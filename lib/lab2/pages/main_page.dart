@@ -4,6 +4,7 @@ import 'package:my_project/lab2/logic/model/fitness_data.dart';
 import 'package:my_project/lab2/logic/service/tracker/fitness_data_service.dart';
 import 'package:my_project/lab2/widgets/custom_bottom_nav_bar.dart';
 import 'package:my_project/lab2/widgets/custom_drawer.dart';
+import 'package:provider/provider.dart';
 
 
 class MainPage extends StatefulWidget {
@@ -14,7 +15,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final FitnessDataService _fitnessDataService = FitnessDataService();
   List<FitnessData> _fitnessDataList = [];
   int _selectedIndex = 0;
 
@@ -52,7 +52,9 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<void> _loadFitnessDataList() async {
-    final data = await _fitnessDataService.loadFitnessDataList();
+    final fitnessDataService = Provider.of<FitnessDataService>(context,
+        listen: false,);
+    final data = await fitnessDataService.loadFitnessDataList();
     setState(() => _fitnessDataList = data);
   }
 
@@ -61,7 +63,9 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<void> _deleteFitnessData(int index) async {
-    await _fitnessDataService.deleteFitnessData(index);
+    final fitnessDataService = Provider.of<FitnessDataService>(context,
+        listen: false,);
+    await fitnessDataService.deleteFitnessData(index);
     _loadFitnessDataList();
   }
 
@@ -92,8 +96,8 @@ class _MainPageState extends State<MainPage> {
                 ),
                 TextField(
                   controller: caloriesController,
-                  decoration:
-                  const InputDecoration(hintText: 'Enter calories burned'),
+                  decoration: const InputDecoration(hintText:
+                  'Enter calories burned',),
                   keyboardType: TextInputType.number,
                 ),
               ],
@@ -118,8 +122,9 @@ class _MainPageState extends State<MainPage> {
                     steps: steps,
                     caloriesBurned: calories,
                   );
-                  await _fitnessDataService.addFitnessData(newData);
-
+                  final fitnessDataService = Provider.of<FitnessDataService>
+                    (context, listen: false,);
+                  await fitnessDataService.addFitnessData(newData);
                   _loadFitnessDataList();
                 }
               },
@@ -143,9 +148,10 @@ class _MainPageState extends State<MainPage> {
         itemBuilder: (context, index) {
           final item = _fitnessDataList[index];
           return ListTile(
-            title: Text('Date: ${item.date.toIso8601String()},'
-                'Steps: ${item.steps},'
-                'Calories Burned: ${item.caloriesBurned}'),
+            title: Text(
+              'Date: ${item.date.toIso8601String()}, Steps: ${item.steps}, '
+                  'Calories Burned: ${item.caloriesBurned}',
+            ),
             trailing: Wrap(
               spacing: 12,
               children: [

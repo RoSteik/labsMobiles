@@ -22,7 +22,7 @@ class UserStorageService implements IUserStorageService {
     final userString = prefs.getString(email);
     if (userString != null) {
       final Map<String, dynamic> userMap =
-      jsonDecode(userString) as Map<String, dynamic>;
+          jsonDecode(userString) as Map<String, dynamic>;
       return User.fromJson(userMap);
     }
     return null;
