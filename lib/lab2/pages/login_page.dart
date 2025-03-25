@@ -25,7 +25,6 @@ class _LoginPageState extends State<LoginPage> {
     final email = _emailController.text;
     final password = _passwordController.text;
 
-    // Access AuthService via Provider
     final authService = Provider.of<AuthService>(context, listen: false);
     final loggedIn = await authService.login(email, password);
 

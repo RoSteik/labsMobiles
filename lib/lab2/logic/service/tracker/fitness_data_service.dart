@@ -1,32 +1,33 @@
 import 'dart:convert';
 
 import 'package:my_project/lab2/logic/model/fitness_data.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:my_project/lab2/logic/service/auth/user_storage_service.dart';
+
 
 abstract class IFitnessDataService {
-
   Future<List<FitnessData>> loadFitnessDataList();
+
   Future<void> saveFitnessDataList(List<FitnessData> dataList);
+
   Future<void> addFitnessData(FitnessData data);
+
   Future<void> deleteFitnessData(int index);
-
-
 }
 
-
-class FitnessDataService implements IFitnessDataService{
+class FitnessDataService implements IFitnessDataService {
   static const _fitnessDataKey = 'fitnessData';
 
   @override
   Future<List<FitnessData>> loadFitnessDataList() async {
-    final prefs = await SharedPreferences.getInstance();
-    final fitnessDataString = prefs.getString(_fitnessDataKey);
+    final fitnessDataString =
+        SharedPrefsHolder.instance.getString(_fitnessDataKey);
     if (fitnessDataString != null) {
       final List<dynamic> jsonDataList =
-      jsonDecode(fitnessDataString) as List<dynamic>;
+          jsonDecode(fitnessDataString) as List<dynamic>;
       return jsonDataList
           .map((jsonData) =>
-          FitnessData.fromJson(jsonData as Map<String, dynamic>),)
+              FitnessData.fromJson(jsonData as Map<String, dynamic>),)
           .toList();
     }
     return [];
@@ -34,9 +35,10 @@ class FitnessDataService implements IFitnessDataService{
 
   @override
   Future<void> saveFitnessDataList(List<FitnessData> dataList) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString(_fitnessDataKey,
-      jsonEncode(dataList.map((data) => data.toJson()).toList()),);
+    await SharedPrefsHolder.instance.setString(
+      _fitnessDataKey,
+      jsonEncode(dataList.map((data) => data.toJson()).toList()),
+    );
   }
 
   @override
