@@ -3,6 +3,7 @@ import 'package:my_project/lab2/elements/app_routes.dart';
 import 'package:my_project/lab2/logic/service/auth/auth_service.dart';
 import 'package:my_project/lab2/logic/service/auth/user_storage_service.dart';
 import 'package:my_project/lab2/logic/service/tracker/fitness_data_service.dart';
+import 'package:my_project/lab2/pages/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Fitness App',
         theme: ThemeData(primarySwatch: Colors.blue),
-        initialRoute: '/login',
+        home: const SplashScreen(),
         routes: appRoutes,
       ),
     );

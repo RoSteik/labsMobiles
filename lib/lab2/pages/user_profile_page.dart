@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:my_project/lab2/elements/responsive_config.dart';
 import 'package:my_project/lab2/logic/model/user.dart';
-
+import 'package:my_project/lab2/logic/service/auth/auth_service.dart';
 import 'package:my_project/lab2/logic/service/auth/user_storage_service.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -39,6 +40,40 @@ class _UserProfilePageState extends State<UserProfilePage> {
         });
       }
     }
+  }
+
+  Future<void> _logout() async {
+    await Provider.of<AuthService>(context, listen: false).logout();
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, '/login');
+    }
+  }
+
+  void _showLogoutConfirmationDialog() {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Log out'),
+          content: const Text('Are you sure you want to log out?'),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              onPressed: _logout,
+              child: const Text('Log Out'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 import 'package:my_project/lab2/logic/service/auth/auth_service.dart';
@@ -15,27 +16,60 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  void _attemptLogin() async {
-    final email = _emailController.text;
-    final password = _passwordController.text;
-
-    // Access AuthService via Provider
-    final authService = Provider.of<AuthService>(context, listen: false);
-    final loggedIn = await authService.login(email, password);
-
-    if (mounted) {
-      if (loggedIn) {
-        Navigator.pushReplacementNamed(context, '/');
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Invalid email or password')),
+  void _showNoInternetDialog() {
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('No Internet Connection'),
+          content: const Text('You are not connected to the internet. '
+              'Please check your connection and try again.'),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         );
+      },
+    );
+  }
+
+  void _attemptLogin() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      _showNoInternetDialog();
+    } else {
+      final email = _emailController.text;
+      final password = _passwordController.text;
+
+
+      if (!mounted) return;
+
+      final authService = Provider.of<AuthService>(context, listen: false);
+      final loggedIn = await authService.login(email, password);
+
+      if (mounted) {
+        if (loggedIn) {
+          Navigator.pushReplacementNamed(context, '/home');
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Invalid email or password')),
+          );
+        }
       }
     }
   }
